@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Todo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <h1>Calendar Login</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" id="loginBtn">Login</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="calendarPage" class="container" style="display: none;">
+        <div class="header">
+            <button id="prevBtn">‹</button>
+            <h1 id="monthYear"></h1>
+            <button id="nextBtn">›</button>
+            <button id="todayBtn" class="today-btn">Today</button>
+            <button id="settingsBtn" class="settings-btn">⚙️ Settings</button>
+            <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+        </div>
+        
+        <div class="quick-actions">
+            <button class="quick-btn appointment" onclick="quickAdd('appointment')">+ Add Appointment</button>
+        </div>
+        
+        <div class="calendar" id="calendar"></div>
+        
+        <div class="today-info">
+            <h2>Today's Information - <span id="todayInfoDate"></span></h2>
+            <div class="today-overview">
+                <div class="location-info">
+                    <h3>📍 Location</h3>
+                    <div id="currentLocation">Manila, Philippines</div>
+                    <button id="changeLocationBtn" class="change-location-btn">Change Location</button>
+                </div>
+                <div class="weather-info">
+                    <h3>🌤️ Weather</h3>
+                    <div id="todayWeather"></div>
+                </div>
+                <div class="traffic-info">
+                    <h3>🚗 Traffic</h3>
+                    <div id="todayTraffic"></div>
+                </div>
+            </div>
+            <div class="today-tasks">
+                <h3>📅 Today's Schedule</h3>
+                <div id="todayTasksList"></div>
+            </div>
+        </div>
+        
+        <div class="monthly-tasks">
+            <h2>Tasks for <span id="monthlyTasksTitle"></span></h2>
+            <div id="monthlyTasksList"></div>
+        </div>
+        
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3 id="modalDate"></h3>
+                <div class="type-selector">
+                    <button class="type-btn active" data-type="task">Task</button>
+                    <button class="type-btn" data-type="event">Event</button>
+                    <button class="type-btn" data-type="appointment">Appointment</button>
+                </div>
+                <div id="warningArea" class="warning-area"></div>
+                <div class="input-container">
+                    <input type="text" id="itemInput" placeholder="Add task...">
+                    <input type="date" id="dayInput">
+                    <input type="time" id="timeInput">
+                    <label class="all-day-label">
+                        <input type="checkbox" id="allDayInput"> All Day
+                    </label>
+                    <button id="addBtn">Add</button>
+                </div>
+                <ul id="todoList"></ul>
+            </div>
+        </div>
+        
+        <div id="locationModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeLocationModal()">&times;</span>
+                <h3>Edit Location</h3>
+                <div class="form-group">
+                    <label for="locationInput">Enter your location:</label>
+                    <input type="text" id="locationInput" placeholder="e.g., Manila, Philippines">
+                </div>
+                <div class="location-modal-buttons">
+                    <button id="saveLocationBtn" class="save-btn">Save Location</button>
+                    <button onclick="closeLocationModal()" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="locationMethodDialog" class="warning-dialog">
+            <div class="warning-dialog-content">
+                <h3>📍 Change Location</h3>
+                <p>How would you like to set your location?</p>
+                <div class="location-method-buttons">
+                    <button id="useGpsBtn" class="method-btn">📱 Use GPS</button>
+                    <button id="useMapBtn" class="method-btn">🗺️ Pin on Google Map</button>
+                    <button id="cancelLocationBtn" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="warningDialog" class="warning-dialog">
+            <div class="warning-dialog-content">
+                <h3>⚠️ Warning</h3>
+                <div id="warningDialogMessage"></div>
+                <div class="warning-dialog-buttons">
+                    <button id="proceedBtn" class="proceed-btn">Proceed Anyway</button>
+                    <button id="cancelBtn" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeSettingsModal()">&times;</span>
+                <h3>Account Settings</h3>
+                <div class="form-group">
+                    <label for="newUsername">New Username:</label>
+                    <input type="text" id="newUsername" placeholder="Enter new username">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                </div>
+                <div class="settings-buttons">
+                    <button id="saveSettingsBtn" class="save-btn">Save Changes</button>
+                    <button onclick="closeSettingsModal()" class="cancel-btn">Cancel</button>
+                </div>
+                <div id="settingsMessage" class="settings-message"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
